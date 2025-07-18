@@ -4,6 +4,4 @@ module lightingsystem {
 
     opens com.lightingsystem to javafx.fxml;
     exports com.lightingsystem;
-    exports com.lightingsystem.controller;
-    opens com.lightingsystem.controller to javafx.fxml;
 }
