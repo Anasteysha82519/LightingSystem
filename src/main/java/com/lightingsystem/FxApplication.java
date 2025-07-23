@@ -1,10 +1,12 @@
 package com.lightingsystem;
 
-import java.io.IOException;
 import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -12,166 +14,343 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+final class UtilityClass {
+    private UtilityClass() {
+        throw new UnsupportedOperationException();
+    }
+
+    public static SVGPath newSvgPath(String content, Paint fill, Paint stroke, double strokeWidth) {
+        SVGPath svg = new SVGPath();
+        svg.setContent(content);
+        svg.setFill(fill);
+        svg.setStroke(stroke);
+        svg.setStrokeWidth(strokeWidth);
+        return svg;
+    }
+
+    public static Text newText(double x, double y, String content, Font font, Paint fill) {
+        Text txt = new Text(x, y, content);
+        txt.setFill(fill);
+        txt.setFont(font);
+        return txt;
+    }
+}
+
 public class FxApplication extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         var pane = new Pane();
+        var group = new Group(createApartmentOutline());
+        pane.getChildren().add(group);
 
-        SVGPath outer = new SVGPath();
-        outer.setContent("M20 40 h710 v490 h-710 z");
-        outer.setFill(Color.web("#666666"));
-        outer.setStroke(Color.BLACK);
-        outer.setStrokeWidth(2);
-        pane.getChildren().add(outer);
+        var scene = new Scene(pane, 800, 800);
+        stage.setTitle("Hello!");
+        stage.setScene(scene);
+        stage.show();
+    }
 
-        SVGPath wall = new SVGPath();
-        wall.setContent(
+    private Node[] createApartmentOutline() {
+        Font labelFont = Font.font("Helvetica", FontWeight.LIGHT, FontPosture.ITALIC, 12);
+        Color labelColor = Color.web("#999966");
+
+        Text t1 = UtilityClass.newText(45, 75, "Ванная", labelFont, labelColor);
+        Text t2 = UtilityClass.newText(45, 185, "Туалет", labelFont, labelColor);
+        Text t3 = UtilityClass.newText(45, 265, "Кухня", labelFont, labelColor);
+        Text t4 = UtilityClass.newText(195, 75, "Прихожая", labelFont, labelColor);
+        Text t5 = UtilityClass.newText(515, 75, "Спальня", labelFont, labelColor);
+        Text t6 = UtilityClass.newText(305, 185, "Гостиная", labelFont, labelColor);
+
+        SVGPath outer = UtilityClass.newSvgPath(
+                "M20 40 h710 v490 h-710 z",
+                Color.web("#666666"),
+                Color.BLACK,
+                2d
+        );
+
+        SVGPath wall = UtilityClass.newSvgPath(
                 "M40 60 h140 v25 h10 v-25 "
                         + "h150 v-20 h60 v20 h100 v25 h10 v-25 "
                         + "h200 v450 h-200 v-375 h-10 v25 h-75 v10 "
                         + "h75 v340 h-200 v-340 h75 v-10 h-85 v80 "
                         + "h-25 v10 h25 v260 h-250 v-260 h175 v-10 "
                         + "h-25 v-10 h-10 v10 h-140 v-70 h140 v10 "
-                        + "h10 v-45 h-10 v25 h-140 v-100"
+                        + "h10 v-45 h-10 v25 h-140 v-100",
+                Color.WHITE,
+                Color.BLACK,
+                2d
         );
-        wall.setFill(Color.WHITE);
-        wall.setStroke(Color.BLACK);
-        wall.setStrokeWidth(2);
-        pane.getChildren().add(wall);
 
-        Font labelFont = Font.font("Helvetica", FontWeight.LIGHT, FontPosture.ITALIC, 12);
-        Color labelColor = Color.web("#999966");
-
-        Text t1 = new Text(45, 75,  "Ванная");
-        t1.setFont(labelFont);
-        t1.setFill(labelColor);
-        pane.getChildren().add(t1);
-
-        Text t2 = new Text(45, 185, "Туалет");
-        t2.setFont(labelFont);
-        t2.setFill(labelColor);
-        pane.getChildren().add(t2);
-
-        Text t3 = new Text(45, 265, "Кухня");
-        t3.setFont(labelFont);
-        t3.setFill(labelColor);
-        pane.getChildren().add(t3);
-
-        Text t4 = new Text(195, 75, "Прихожая");
-        t4.setFont(labelFont);
-        t4.setFill(labelColor);
-        pane.getChildren().add(t4);
-
-        Text t5 = new Text(515, 75, "Спальня");
-        t5.setFont(labelFont);
-        t5.setFill(labelColor);
-        pane.getChildren().add(t5);
-
-        Text t6 = new Text(305, 185, "Гостиная");
-        t6.setFont(labelFont);
-        t6.setFill(labelColor);
-        pane.getChildren().add(t6);
-
-        SVGPath window1 = new SVGPath();
-        window1.setContent(
+        SVGPath window1 = UtilityClass.newSvgPath(
                 "M120 510 h75 v20 h-75 v-20 "
                         + "M120 515 h75 v10 h-75 v-10 "
-                        + "M130 515 h55 v10 h-55 v-10"
+                        + "M130 515 h55 v10 h-55 v-10",
+                Color.WHITE,
+                Color.BLACK,
+                2d
         );
-        window1.setFill(Color.WHITE);
-        window1.setStroke(Color.BLACK);
-        window1.setStrokeWidth(2);
-        pane.getChildren().add(window1);
 
-        SVGPath door = new SVGPath();
-        door.setContent("M195 510 h50 v20 h-50 v-20");
-        door.setFill(Color.WHITE);
-        door.setStroke(Color.BLACK);
-        door.setStrokeWidth(2);
-        pane.getChildren().add(door);
+        SVGPath door = UtilityClass.newSvgPath(
+                "M195 510 h50 v20 h-50 v-20",
+                Color.WHITE,
+                Color.BLACK,
+                2d
+        );
 
-        SVGPath porch = new SVGPath();
-        porch.setContent("M80 530 v70 h200 v-70 h5 v75 h-210 v-75");
-        porch.setFill(Color.WHITE);
-        porch.setStroke(Color.BLACK);
-        porch.setStrokeWidth(2);
-        pane.getChildren().add(porch);
+        SVGPath porch = UtilityClass.newSvgPath(
+                "M80 530 v70 h200 v-70 h5 v75 h-210 v-75",
+                Color.WHITE,
+                Color.BLACK,
+                2d
+        );
 
-        SVGPath window2 = new SVGPath();
-        window2.setContent(
+        SVGPath window2 = UtilityClass.newSvgPath(
                 "M350 510 h100 v20 h-100 v-20 "
                         + "M350 515 h100 v10 h-100 v-10 "
-                        + "M360 515 h80 v10 h-80 v-10"
+                        + "M360 515 h80 v10 h-80 v-10",
+                Color.WHITE,
+                Color.BLACK,
+                2d
         );
-        window2.setFill(Color.WHITE);
-        window2.setStroke(Color.BLACK);
-        window2.setStrokeWidth(2);
-        pane.getChildren().add(window2);
 
-        SVGPath window3 = new SVGPath();
-        window3.setContent(
+        SVGPath window3 = UtilityClass.newSvgPath(
                 "M560 510 h100 v20 h-100 v-20 "
                         + "M560 515 h100 v10 h-100 v-10 "
-                        + "M570 515 h80 v10 h-80 v-10"
+                        + "M570 515 h80 v10 h-80 v-10",
+                Color.WHITE,
+                Color.BLACK,
+                2d
         );
-        window3.setFill(Color.WHITE);
-        window3.setStroke(Color.BLACK);
-        window3.setStrokeWidth(2);
-        pane.getChildren().add(window3);
 
-        SVGPath door1 = new SVGPath();
-        door1.setContent("M400 55 h-60 v50 A70.71 70.71 0 0 0 400 55");
-        door1.setFill(Color.WHITE);
-        door1.setStroke(Color.BLACK);
-        door1.setStrokeWidth(2);
-        pane.getChildren().add(door1);
+        SVGPath door1 = UtilityClass.newSvgPath(
+                "M400 55 h-60 v50 A70.71 70.71 0 0 0 400 55",
+                Color.WHITE,
+                Color.BLACK,
+                2d
+        );
 
-        SVGPath door2 = new SVGPath();
-        door2.setContent("M185 85 v50 h50 A70.71 70.71 0 0 0 185 85");
-        door2.setFill(Color.WHITE);
-        door2.setStroke(Color.BLACK);
-        door2.setStrokeWidth(2);
-        pane.getChildren().add(door2);
+        SVGPath door2 = UtilityClass.newSvgPath(
+                "M185 85 v50 h50 A70.71 70.71 0 0 0 185 85",
+                Color.WHITE,
+                Color.BLACK,
+                2d
+        );
 
-        SVGPath door3 = new SVGPath();
-        door3.setContent("M185 180 v50 h50 A70.71 70.71 0 0 0 185 180");
-        door3.setFill(Color.WHITE);
-        door3.setStroke(Color.BLACK);
-        door3.setStrokeWidth(2);
-        pane.getChildren().add(door3);
+        SVGPath door3 = UtilityClass.newSvgPath(
+                "M185 180 v50 h50 A70.71 70.71 0 0 0 185 180",
+                Color.WHITE,
+                Color.BLACK,
+                2d
+        );
 
-        SVGPath door4 = new SVGPath();
-        door4.setContent("M215 245 h50 v50 A70.71 70.71 0 0 1 215 245");
-        door4.setFill(Color.WHITE);
-        door4.setStroke(Color.BLACK);
-        door4.setStrokeWidth(2);
-        pane.getChildren().add(door4);
+        SVGPath door4 = UtilityClass.newSvgPath(
+                "M215 245 h50 v50 A70.71 70.71 0 0 1 215 245",
+                Color.WHITE,
+                Color.BLACK,
+                2d
+        );
 
-        SVGPath door5 = new SVGPath();
-        door5.setContent("M375 165 h50 v50 A70.71 70.71 0 0 1 375 165");
-        door5.setFill(Color.WHITE);
-        door5.setStroke(Color.BLACK);
-        door5.setStrokeWidth(2);
-        pane.getChildren().add(door5);
+        SVGPath door5 = UtilityClass.newSvgPath(
+                "M375 165 h50 v50 A70.71 70.71 0 0 1 375 165",
+                Color.WHITE,
+                Color.BLACK,
+                2d
+        );
 
-        SVGPath door6 = new SVGPath();
-        door6.setContent("M505 85 v50 h50 A70.71 70.71 0 0 0 505 85");
-        door6.setFill(Color.WHITE);
-        door6.setStroke(Color.BLACK);
-        door6.setStrokeWidth(2);
-        pane.getChildren().add(door6);
+        SVGPath door6 = UtilityClass.newSvgPath(
+                "M505 85 v50 h50 A70.71 70.71 0 0 0 505 85",
+                Color.WHITE,
+                Color.BLACK,
+                2d
+        );
 
-        SVGPath door7 = new SVGPath();
-        door7.setContent("M195 510 h50 v-50 A70.71 70.71 0 0 0 195 510");
-        door7.setFill(Color.WHITE);
-        door7.setStroke(Color.BLACK);
-        door7.setStrokeWidth(2);
-        pane.getChildren().add(door7);
+        SVGPath door7 = UtilityClass.newSvgPath(
+                "M195 510 h50 v-50 A70.71 70.71 0 0 0 195 510",
+                Color.WHITE,
+                Color.BLACK,
+                2d
+        );
 
-        var scene = new Scene(pane, 800, 800);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
+        SVGPath lamp1 = UtilityClass.newSvgPath(
+                "M556.5647,486.5512L553.0917,471.2362C552.9424,470.5777,552.2191,470,551.5439,470H539.2547c-0.6753,0-1.3986,0.5777-1.5479,1.2362"
+                        + "L534.2338,486.5512c-0.0601,0.2653-0.0181,0.5055,0.1183,0.6763c0.1365,0.1709,0.3614,0.265,0.6334,0.265h3.4548v2.6072"
+                        + "c-0.4367,0.237-0.7333,0.6995-0.7333,1.2313c0,0.7732,0.6268,1.4,1.4,1.4c0.7732,0,1.4-0.6268,1.4-1.4c0-0.5318-0.2966-0.9943-0.7333-1.2313v-2.6072h16.0391"
+                        + "c0.2719,0,0.4969-0.0941,0.6334-0.265C556.5828,487.0567,556.6248,486.8165,556.5647,486.5512z"
+                        + "M551.249,499.4651h-5.1831v-10.6392h-1.3333v10.6392H539.5493c-0.3682,0-0.6667,0.2985-0.6667,0.6667c0,0.3682,0.2985,0.6667,0.6667,0.6667h11.6996"
+                        + "c0.3681,0,0.6667-0.2985,0.6667-0.6667C551.9157,499.7636,551.6171,499.4651,551.249,499.4651z",
+                Color.BLACK,
+                Color.BLACK,
+                0.5d
+        );
+
+        SVGPath lamp2 = UtilityClass.newSvgPath(
+                "M686.5647,486.5512L683.0917,471.2362C682.9424,470.5777,682.2191,470,681.5439,470H669.2547c-0.6753,0-1.3986,0.5777-1.5479,1.2362"
+                        + "L664.2338,486.5512c-0.0601,0.2653-0.0181,0.5055,0.1183,0.6763c0.1365,0.1709,0.3614,0.265,0.6334,0.265h3.4548v2.6072"
+                        + "c-0.4367,0.237-0.7333,0.6995-0.7333,1.2313c0,0.7732,0.6268,1.4,1.4,1.4c0.7732,0,1.4-0.6268,1.4-1.4c0-0.5318-0.2966-0.9943-0.7333-1.2313v-2.6072h16.0391"
+                        + "c0.2719,0,0.4969-0.0941,0.6334-0.265C686.5828,487.0567,686.6248,486.8165,686.5647,486.5512z"
+                        + "M681.249,499.4651h-5.1831v-10.6392h-1.3333v10.6392H669.5493c-0.3682,0-0.6667,0.2985-0.6667,0.6667c0,0.3682,0.2985,0.6667,0.6667,0.6667h11.6996"
+                        + "c0.3681,0,0.6667-0.2985,0.6667-0.6667C681.9157,499.7636,681.6171,499.4651,681.249,499.4651z",
+                Color.BLACK,
+                Color.BLACK,
+                0.5d
+        );
+
+        SVGPath lamp3 = UtilityClass.newSvgPath(
+                "M667.57,78.118c-1.598-1.306-2.618-3.292-2.618-5.517 0-1.118 0.28-2.162 0.739-3.104l-1.098-1.097-6.67,6.671"
+                        + "c1.24,0.976 1.115,1.93-0.336,2.86l8.911,8.91h4.367c0.562,0 1.018,0.456 1.018,1.018v1.018h-4.768l-0.011,0.011-0.011-0.011"
+                        + "h-7.418v-1.017c0-0.562 0.456-1.018 1.018-1.018h4.367l-8.406-8.405c-1.661,0.712-2.481,0.024-2.446-2.09 0.038-2.249 0.991-2.849 2.839-1.837"
+                        + "l6.829-6.829-0.676-0.675c-0.397-0.396-0.397-1.041 0-1.438l2.158-2.158c0.397-0.397 1.042-0.397 1.439,0l2.6,2.602"
+                        + "c0.828-0.337 1.729-0.53 2.678-0.53 2.342,0 4.422,1.005 5.719,2.752 0.044,0.011-10.187,9.9-10.224,9.884zM675.443,71.754c0,0 1.717,2.161 0,3.878"
+                        + "s-3.857-0.021-3.857-0.021l3.857-3.857z",
+                Color.BLACK,
+                Color.BLACK,
+                0.5d
+        );
+
+        SVGPath lamp4 = UtilityClass.newSvgPath(
+                "M600,200.246c0.529,2.28,2.568,3.98,5.008,3.98c2.44,0,4.48-1.7,5.008-3.98H600z "
+                        + "M616.797,198.381C616.443,192.284,611.469,187.481,605.395,187.282V183h-0.777v4.282c-6.07-0.199-11.044,4.604-11.735,10.701"
+                        + "c-0.016,0.28,0.086,0.56,0.276,0.762c0.194,0.21,0.47,0.326,0.754,0.326h21.517c0.284,0,0.556-0.116,0.754-0.326"
+                        + "C616.711,198.94,616.812,198.661,616.797,198.381z M612.828,197.64c0-4.063-3.631-7.369-8.095-7.369v-0.777"
+                        + "c4.892,0,8.872,3.654,8.872,8.146H612.828z",
+                Color.BLACK,
+                Color.TRANSPARENT,
+                0.0
+        );
+
+        SVGPath lamp5 = UtilityClass.newSvgPath(
+                "M600,380.246c0.529,2.28,2.568,3.98,5.008,3.98c2.44,0,4.48-1.7,5.008-3.98H600z "
+                        + "M616.797,378.381C616.443,372.284,611.469,367.481,605.395,367.282V363h-0.777v4.282c-6.07-0.199-11.044,4.604-11.735,10.701"
+                        + "c-0.016,0.28,0.086,0.56,0.276,0.762c0.194,0.21,0.47,0.326,0.754,0.326h21.517c0.284,0,0.556-0.116,0.754-0.326"
+                        + "C616.711,378.94,616.812,378.661,616.797,378.381z M612.828,377.64c0-4.063-3.631-7.369-8.095-7.369v-0.777"
+                        + "c4.892,0,8.872,3.654,8.872,8.146H612.828z",
+                Color.BLACK,
+                Color.TRANSPARENT,
+                0.0
+        );
+
+        SVGPath lamp6 = UtilityClass.newSvgPath(
+                "M116.5305,112.1105l-1.5755,-9.452c-0.148,-0.759,-0.4285,-1.317,-0.8135,-1.317h-9.4525"
+                        + "c-0.385,0,-0.7135,0.279,-0.7765,0.6585l-1.5755,9.452c-0.0385,0.2285,0.026,0.4615,0.1755,0.638c0.1495,0.177,0.3695,0.279,0.601,0.279"
+                        + "h1.3255c-0.3495,0.7335,-0.538,1.5385,-0.538,2.363c0,3.0395,2.474,5.514,5.514,5.514s5.514,-2.4745,5.514,-5.514"
+                        + "c0,-0.8245,-0.1885,-1.6295,-0.538,-2.363h1.3255c0.2315,0,0.4515,-0.102,0.601,-0.279C116.4965,112.572,116.561,112.339,116.5305,112.1105z"
+                        + "M109.452,119.329c-2.1715,0,-3.9385,-1.767,-3.9385,-3.9385c0,-0.8545,0.2795,-1.6815,0.794,-2.363h6.2895c0.5145,0.6815,0.794,1.5085,0.794,2.363"
+                        + "C113.3905,117.562,111.6235,119.329,109.452,119.329z",
+                Color.BLACK,
+                Color.TRANSPARENT,
+                0.0
+        );
+
+        SVGPath lamp7 = UtilityClass.newSvgPath(
+                "M116,207l-1.5755,-9.452c-0.148,-0.759,-0.4285,-1.317,-0.8135,-1.317h-9.4525"
+                + "c-0.385,0,-0.7135,0.279,-0.7765,0.6585l-1.5755,9.452c-0.0385,0.2285,0.026,0.4615,0.1755,0.638"
+                + "c0.1495,0.177,0.3695,0.279,0.601,0.279h1.3255c-0.3495,0.7335,-0.538,1.5385,-0.538,2.363c0,3.0395,2.474,5.514,5.514,5.514"
+                + "s5.514,-2.4745,5.514,-5.514c0,-0.8245,-0.1885,-1.6295,-0.538,-2.363h1.3255c0.2315,0,0.4515,-0.102,0.601,-0.279"
+                + "C115.961,207.4615,116.026,207.2285,116,207z M108.922,214.219c-2.1715,0,-3.9385,-1.767,-3.9385,-3.9385c0,-0.8545,0.2795,-1.6815,0.794,-2.363"
+                + "h6.2895c0.5145,0.6815,0.794,1.5085,0.794,2.363C112.8605,212.452,111.0935,214.219,108.922,214.219z",
+                Color.BLACK,
+                Color.TRANSPARENT,
+                0.0
+        );
+
+        SVGPath lamp8 = UtilityClass.newSvgPath(
+                "M400.501,105.481C400.581,105.481,400.661,105.481,400.751,105.491V102.531C400.751,102.121,400.411,101.781,400.001,101.781"
+                        + "C399.591,101.781,399.251,102.121,399.251,102.531V105.491C399.331,105.481,399.411,105.481,399.501,105.481"
+                        + "C394.891,105.711,391.221,109.511,391.221,114.181V116.121C391.221,117.221,392.121,118.121,393.221,118.121H406.781"
+                        + "C407.881,118.121,408.781,117.221,408.781,116.121V114.181C408.781,109.511,405.111,105.711,400.501,105.481Z "
+                        + "M402.729,119.109C403.059,119.109,403.299,119.419,403.219,119.739C402.839,121.169,401.539,122.219,400.001,122.219"
+                        + "C398.461,122.219,397.161,121.169,396.781,119.739C396.701,119.419,396.941,119.109,397.271,119.109H402.729Z",
+                Color.BLACK,
+                Color.TRANSPARENT,
+                0.0
+        );
+
+        SVGPath lamp9 = UtilityClass.newSvgPath(
+                "M242.501,175.481C242.581,175.481,242.661,175.481,242.751,175.491V172.531C242.751,172.121,242.411,171.781,242.001,171.781"
+                        + "C241.591,171.781,241.251,172.121,241.251,172.531V175.491C241.331,175.481,241.411,175.481,241.501,175.481"
+                        + "C236.891,175.711,233.221,179.511,233.221,184.181V186.121C233.221,187.221,234.121,188.121,235.221,188.121H248.781"
+                        + "C249.881,188.121,250.781,187.221,250.781,186.121V184.181C250.781,179.511,247.111,175.711,242.501,175.481Z "
+                        + "M244.729,189.109C245.059,189.109,245.299,189.419,245.219,189.739C244.839,191.169,243.539,192.219,242.001,192.219"
+                        + "C240.461,192.219,239.161,191.169,238.781,189.739C238.701,189.419,238.941,189.109,239.271,189.109H244.729Z",
+                Color.BLACK,
+                Color.TRANSPARENT,
+                0.0
+        );
+
+        SVGPath lamp10 = UtilityClass.newSvgPath(
+                "M499.403,300H495.307c-0.755,0-1.365,0.61-1.365,1.365v4.096H488.48c-4.832,0-8.83,3.61-9.46,8.272"
+                        + "C472.228,314.365,468,318.984,468,324.576v1.365c0,0.755,0.61,1.365,1.365,1.365h2.869c0.635,3.112,3.393,5.461,6.689,5.461"
+                        + "s6.054-2.35,6.689-5.461H488.48c0.755,0,1.365-0.61,1.365-1.365v-1.365c0-5.516-4.114-10.078-9.43-10.808"
+                        + "c0.59-3.168,3.364-5.576,6.7-5.576h6.827v6.827c0,0.755,0.61,1.365,1.365,1.365h4.096c0.755,0,1.365-0.61,1.365-1.365"
+                        + "V301.365C500.768,300.61,500.158,300,499.403,300z M482.785,327.307c-0.564,1.589-2.082,2.731-3.863,2.731s-3.299-1.142-3.863-2.731"
+                        + "H482.785z",
+                Color.BLACK,
+                Color.TRANSPARENT,
+                0.0
+        );
+
+        SVGPath lamp11 = UtilityClass.newSvgPath(
+                "M325.946,503.778h-7.016V470h10.573l-5.333-20H312.276l-3.081,11.556h9.72"
+                        + "c0.246,0,0.444,0.199,0.444,0.444s-0.198,0.444-0.444,0.444h-9.958l-1.243,4.889H320.909"
+                        + "c0.245,0,0.444,0.199,0.444,0.444c0,0.245-0.199,0.444-0.444,0.444H307.477l-0.535,1.778h10.209v33.778H310.553"
+                        + "c-1.391,0-2.52,1.333-2.52,2.667h20.432C328.465,505.111,327.337,503.778,325.946,503.778z M325.02,467.333c0.246,0,0.444,0.199,0.444,0.444"
+                        + "c0,0.245-0.198,0.444-0.444,0.444h-1.889c-0.246,0-0.444-0.199-0.444-0.444c0-0.245,0.198-0.444,0.444-0.444H325.02z"
+                        + "M320.909,462c0-0.245,0.198-0.444,0.444-0.444h1.889c0.246,0,0.444,0.199,0.444,0.444s-0.198,0.444-0.444,0.444h-1.889"
+                        + "C321.108,462.444,320.909,462.245,320.909,462z",
+                Color.BLACK,
+                Color.TRANSPARENT,
+                0.0
+        );
+
+        SVGPath lamp12 = UtilityClass.newSvgPath(
+                "M400,250.246c0.529,2.28,2.568,3.98,5.008,3.98c2.44,0,4.48-1.7,5.008-3.98H400z "
+                        + "M416.797,248.381C416.443,242.284,411.469,237.481,405.395,237.282V233h-0.777v4.282c-6.07-0.199-11.044,4.604-11.735,10.701"
+                        + "c-0.016,0.28,0.086,0.56,0.276,0.762c0.194,0.21,0.47,0.326,0.754,0.326h21.517c0.284,0,0.556-0.116,0.754-0.326"
+                        + "C416.711,248.94,416.812,248.661,416.797,248.381z M412.828,247.64c0-4.063-3.631-7.369-8.095-7.369v-0.777"
+                        + "c4.892,0,8.872,3.654,8.872,8.146H412.828z",
+                Color.BLACK,
+                Color.TRANSPARENT,
+                0.0
+        );
+
+        SVGPath lamp13 = UtilityClass.newSvgPath(
+                "M400,400.246c0.529,2.28,2.568,3.98,5.008,3.98c2.44,0,4.48-1.7,5.008-3.98H400z "
+                        + "M416.797,398.381C416.443,392.284,411.469,387.481,405.395,387.282V383h-0.777v4.282c-6.07-0.199-11.044,4.604-11.735,10.701"
+                        + "c-0.016,0.28,0.086,0.56,0.276,0.762c0.194,0.21,0.47,0.326,0.754,0.326h21.517c0.284,0,0.556-0.116,0.754-0.326"
+                        + "C416.711,398.94,416.812,398.661,416.797,398.381z M412.828,397.64c0-4.063-3.631-7.369-8.095-7.369v-0.777"
+                        + "c4.892,0,8.872,3.654,8.872,8.146H412.828z",
+                Color.BLACK,
+                Color.TRANSPARENT,
+                0.0
+        );
+
+        SVGPath lamp14 = UtilityClass.newSvgPath(
+                "M125.347,316.375l-6.145-7.17v-2.805c0-0.59-0.475-1.065-1.065-1.065h-2.135v-2.135c0-0.59-0.475-1.065-1.065-1.065h-1.065v-1.07"
+                        + "c0-0.59-0.475-1.065-1.065-1.065s-1.065,0.475-1.065,1.065v1.065h-1.065c-0.59,0-1.065,0.475-1.065,1.065v2.135h-2.135c-0.59,0-1.065,0.475-1.065,1.065"
+                        + "v2.805l-6.155,7.175c-0.27,0.315-0.335,0.76-0.16,1.14s0.55,0.62,0.97,0.62h4.265c0,4.115,3.35,7.465,7.465,7.465s7.465-3.35,7.465-7.465h4.265"
+                        + "c0.415,0,0.795-0.245,0.97-0.62C125.677,317.135,125.617,316.69,125.347,316.375z M111.737,304.265h2.135v1.065h-2.135V304.265z"
+                        + " M119.202,316h-12.8h-3.015l4.57-5.335h9.685l4.57,5.335H119.202z",
+                Color.BLACK,
+                Color.TRANSPARENT,
+                0.0
+        );
+
+        SVGPath lamp15 = UtilityClass.newSvgPath(
+                "M225.347,441.375l-6.145-7.17v-2.805c0-0.59-0.475-1.065-1.065-1.065h-2.135v-2.135c0-0.59-0.475-1.065-1.065-1.065h-1.065v-1.07"
+                        + "c0-0.59-0.475-1.065-1.065-1.065s-1.065,0.475-1.065,1.065v1.065h-1.065c-0.59,0-1.065,0.475-1.065,1.065v2.135h-2.135c-0.59,0-1.065,0.475-1.065,1.065"
+                        + "v2.805l-6.155,7.175c-0.27,0.315-0.335,0.76-0.16,1.14s0.55,0.62,0.97,0.62h4.265c0,4.115,3.35,7.465,7.465,7.465s7.465-3.35,7.465-7.465h4.265"
+                        + "c0.415,0,0.795-0.245,0.97-0.62C225.677,442.135,225.617,441.69,225.347,441.375z M211.737,429.265h2.135v1.065h-2.135V429.265z"
+                        + " M219.202,441h-12.8h-3.015l4.57-5.335h9.685l4.57,5.335H219.202z",
+                Color.BLACK,
+                Color.TRANSPARENT,
+                0.0
+        );
+
+        return new Node[] {
+                outer, wall, window1, window2, window3,
+                door, door1, door2, door3, door4, door5, door6, door7, porch,
+                lamp1, lamp2, lamp3, lamp4, lamp5, lamp6, lamp7, lamp8, lamp9, lamp10, lamp11, lamp12, lamp13, lamp14, lamp15,
+                t1, t2, t3, t4, t5, t6
+        };
     }
 
     public static void main(String[] args) {
