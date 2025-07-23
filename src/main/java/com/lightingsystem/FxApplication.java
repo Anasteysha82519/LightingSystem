@@ -1,7 +1,6 @@
 package com.lightingsystem;
 
 import javafx.application.Application;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -29,7 +28,7 @@ public class FxApplication extends Application {
         stage.show();
     }
 
-    private Node[] createApartmentOutline() {
+    private SVGPath[] createApartmentOutline() {
 
         return new SVGPath[]{
                 newSvgPath("M20 40 h710 v490 h-710 z",
@@ -103,7 +102,7 @@ public class FxApplication extends Application {
         };
     }
 
-    private Node[] createRoomNames() {
+    private Text[] createRoomNames() {
         Font labelFont = Font.font("Helvetica", FontWeight.LIGHT, FontPosture.ITALIC, 12);
         Color labelColor = Color.web("#999966");
         return new Text[] {
@@ -116,7 +115,7 @@ public class FxApplication extends Application {
         };
     }
 
-    private Node[] createLamps() {
+    private SVGPath[] createLamps() {
         return new SVGPath[]{
                 newSvgPath("M0,0l-3.473,-15.315c-0.149,-0.658,-0.872,-1.236,-1.547,-1.236h-12.289c-0.675,0,-1.399,0.577,-1.548,1.236"
                                 + "l-3.473,15.315c-0.06,0.265,-0.018,0.506,0.118,0.676c0.137,0.171,0.362,0.265,0.633,0.265h3.455v2.607"
