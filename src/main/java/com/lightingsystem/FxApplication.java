@@ -119,21 +119,21 @@ public class FxApplication extends Application {
 
     private Node[] createLamps() {
         return new Node[]{
-                LampFactory.createBedsideLamp(555, 493),
-                LampFactory.createBedsideLamp(685, 493),
+                LampFactory.createBedsideLamp(545, 493),
+                LampFactory.createBedsideLamp(673, 493),
                 LampFactory.createTableLamp(690, 80),
                 LampFactory.createCeilingLamp(610, 190),
                 LampFactory.createCeilingLamp(610, 390),
                 LampFactory.createCeilingLamp(400, 280),
                 LampFactory.createCeilingLamp(400, 400),
-                LampFactory.createBathroomLamp(115, 115),
-                LampFactory.createBathroomLamp(115, 210),
+                LampFactory.createBathroomLamp(110, 110),
+                LampFactory.createBathroomLamp(110, 205),
                 LampFactory.createHallwayLamp(400, 105),
                 LampFactory.createHallwayLamp(240, 155),
-                LampFactory.createWallLamp(499, 200),
-                LampFactory.createFloorLamp(330, 485),
-                LampFactory.createKitchenLamp(120, 310),
-                LampFactory.createKitchenLamp(235, 450)
+                LampFactory.createWallLamp(489, 200),
+                LampFactory.createFloorLamp(325, 475),
+                LampFactory.createKitchenLamp(110, 310),
+                LampFactory.createKitchenLamp(225, 440)
         };
     }
 
