@@ -130,7 +130,7 @@ public class FxApplication extends Application {
                 LampFactory.createBathroomLamp(110, 205),
                 LampFactory.createHallwayLamp(400, 105),
                 LampFactory.createHallwayLamp(240, 155),
-                LampFactory.createWallLamp(489, 200),
+                LampFactory.createWallLamp(487, 200),
                 LampFactory.createFloorLamp(325, 475),
                 LampFactory.createKitchenLamp(110, 310),
                 LampFactory.createKitchenLamp(225, 440)
