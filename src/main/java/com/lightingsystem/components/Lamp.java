@@ -77,26 +77,25 @@ public final class Lamp extends Group {
         if (turnedOn) {
             glowTimeline.getKeyFrames().addAll(
                     new KeyFrame(
-                            Duration.millis(50),
+                            Duration.ZERO,
                             new KeyValue(
                                     glowEffect.levelProperty(),
-                                    2.5,
-                                    Interpolator.LINEAR
+                                    2.0
                             )
                     ),
                     new KeyFrame(
-                            Duration.millis(50),
+                            Duration.millis(110),
                             new KeyValue(
                                     glowEffect.levelProperty(),
-                                    1.3,
+                                    0.2,
                                     Interpolator.EASE_OUT
                             )
                     ),
                     new KeyFrame(
-                            Duration.millis(400),
+                            Duration.millis(290),
                             new KeyValue(
                                     glowEffect.levelProperty(),
-                                    0.3,
+                                    0.8,
                                     Interpolator.EASE_IN
                             )
                     )
@@ -108,22 +107,14 @@ public final class Lamp extends Group {
                             Duration.ZERO,
                             new KeyValue(
                                     glowEffect.levelProperty(),
-                                    1.0
-                            )
-                    ),
-                    new KeyFrame(
-                            Duration.millis(100),
-                            new KeyValue(
-                                    glowEffect.levelProperty(),
-                                    0.5,
-                                    Interpolator.EASE_IN
+                                    0.8
                             )
                     ),
                     new KeyFrame(
                             Duration.millis(400),
                             new KeyValue(
                                     glowEffect.levelProperty(),
-                                    0.1,
+                                    0.0,
                                     Interpolator.EASE_OUT
                             )
                     )
@@ -135,16 +126,16 @@ public final class Lamp extends Group {
                 lightEffect
         );
         lightFade.setFromValue(turnedOn ? 0.0 : 0.3);
-        lightFade.setToValue(turnedOn ? 0.5 : 0.0);
+        lightFade.setToValue(turnedOn ? 0.3 : 0.0);
 
         var lightScale = new ScaleTransition(
                 Duration.millis(500),
                 lightEffect
         );
-        lightScale.setFromX(turnedOn ? 0.5 : 1.5);
-        lightScale.setFromY(turnedOn ? 0.5 : 1.5);
-        lightScale.setToX(turnedOn ? 1.5 : 0.5);
-        lightScale.setToY(turnedOn ? 1.5 : 0.5);
+        lightScale.setFromX(turnedOn ? 0.0 : 0.1);
+        lightScale.setFromY(turnedOn ? 0.0 : 0.1);
+        lightScale.setToX(turnedOn ? 0.1 : 0.0);
+        lightScale.setToY(turnedOn ? 0.1 : 0.0);
         lightScale.setInterpolator(turnedOn ? Interpolator.EASE_OUT : Interpolator.EASE_IN);
 
 
