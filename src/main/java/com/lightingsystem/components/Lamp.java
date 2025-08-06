@@ -50,7 +50,7 @@ public final class Lamp extends Group {
 
         setOnMouseEntered(e -> {
             if (!turnedOn) {
-                lampImage.setFill(Color.web("#e499ff"));
+                lampImage.setFill(Color.web("#7777bb"));
                 setEffect(hoverEffect);
             }
         });
@@ -77,17 +77,18 @@ public final class Lamp extends Group {
         if (turnedOn) {
             glowTimeline.getKeyFrames().addAll(
                     new KeyFrame(
-                            Duration.ZERO,
+                            Duration.millis(50),
                             new KeyValue(
                                     glowEffect.levelProperty(),
-                                    0.0
+                                    2.5,
+                                    Interpolator.LINEAR
                             )
                     ),
                     new KeyFrame(
-                            Duration.millis(100),
+                            Duration.millis(50),
                             new KeyValue(
                                     glowEffect.levelProperty(),
-                                    1.8,
+                                    1.3,
                                     Interpolator.EASE_OUT
                             )
                     ),
@@ -95,20 +96,35 @@ public final class Lamp extends Group {
                             Duration.millis(400),
                             new KeyValue(
                                     glowEffect.levelProperty(),
-                                    0.8,
+                                    0.3,
                                     Interpolator.EASE_IN
                             )
                     )
             );
         }
         else {
-            glowTimeline.getKeyFrames().add(
+            glowTimeline.getKeyFrames().addAll(
+                    new KeyFrame(
+                            Duration.ZERO,
+                            new KeyValue(
+                                    glowEffect.levelProperty(),
+                                    1.0
+                            )
+                    ),
+                    new KeyFrame(
+                            Duration.millis(100),
+                            new KeyValue(
+                                    glowEffect.levelProperty(),
+                                    0.5,
+                                    Interpolator.EASE_IN
+                            )
+                    ),
                     new KeyFrame(
                             Duration.millis(400),
                             new KeyValue(
                                     glowEffect.levelProperty(),
-                                    0.0,
-                                    Interpolator.EASE_IN
+                                    0.1,
+                                    Interpolator.EASE_OUT
                             )
                     )
             );
@@ -119,19 +135,17 @@ public final class Lamp extends Group {
                 lightEffect
         );
         lightFade.setFromValue(turnedOn ? 0.0 : 0.3);
-        lightFade.setToValue(turnedOn ? 0.3 : 0.0);
-        lightFade.setInterpolator(Interpolator.EASE_BOTH);
-
+        lightFade.setToValue(turnedOn ? 0.5 : 0.0);
 
         var lightScale = new ScaleTransition(
                 Duration.millis(500),
                 lightEffect
         );
-        lightScale.setFromX(turnedOn ? 0.5 : 1.0);
-        lightScale.setFromY(turnedOn ? 0.5 : 1.0);
-        lightScale.setToX(turnedOn ? 1.0 : 0.5);
-        lightScale.setToY(turnedOn ? 1.0 : 0.5);
-        lightScale.setInterpolator(Interpolator.EASE_BOTH);
+        lightScale.setFromX(turnedOn ? 0.5 : 1.5);
+        lightScale.setFromY(turnedOn ? 0.5 : 1.5);
+        lightScale.setToX(turnedOn ? 1.5 : 0.5);
+        lightScale.setToY(turnedOn ? 1.5 : 0.5);
+        lightScale.setInterpolator(turnedOn ? Interpolator.EASE_OUT : Interpolator.EASE_IN);
 
 
         var parallelTransition = new ParallelTransition(

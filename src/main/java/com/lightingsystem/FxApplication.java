@@ -1,8 +1,8 @@
 package com.lightingsystem;
 
+import com.lightingsystem.components.Lamp;
 import com.lightingsystem.components.LampFactory;
 import javafx.application.Application;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -117,8 +117,8 @@ public class FxApplication extends Application {
         };
     }
 
-    private Node[] createLamps() {
-        return new Node[]{
+    private Lamp[] createLamps() {
+        return new Lamp[]{
                 LampFactory.createBedsideLamp(545, 493),
                 LampFactory.createBedsideLamp(673, 493),
                 LampFactory.createTableLamp(690, 80),
