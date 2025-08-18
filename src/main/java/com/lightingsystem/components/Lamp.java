@@ -1,6 +1,5 @@
 package com.lightingsystem.components;
 
-import com.lightingsystem.dialog.PowerConfigurationDialog;
 import javafx.animation.*;
 import javafx.scene.Group;
 import javafx.scene.effect.Glow;
@@ -13,7 +12,6 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
-import com.lightingsystem.interfaces.PowerConfigurableElectricityConsumer;
 
 public final class Lamp extends Group implements PowerConfigurableElectricityConsumer{
     private final SVGPath lampImage;

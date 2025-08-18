@@ -1,6 +1,5 @@
-package com.lightingsystem.dialog;
+package com.lightingsystem.components;
 
-import com.lightingsystem.interfaces.PowerConfigurableElectricityConsumer;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 

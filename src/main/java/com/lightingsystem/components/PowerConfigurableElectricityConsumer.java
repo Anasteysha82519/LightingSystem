@@ -1,4 +1,4 @@
-package com.lightingsystem.interfaces;
+package com.lightingsystem.components;
 
 public interface PowerConfigurableElectricityConsumer {
     double getPower();
