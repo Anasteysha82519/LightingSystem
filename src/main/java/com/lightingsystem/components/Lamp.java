@@ -4,6 +4,7 @@ import javafx.animation.*;
 import javafx.scene.Group;
 import javafx.scene.effect.Glow;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
@@ -12,12 +13,13 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 
-public final class Lamp extends Group {
+public final class Lamp extends Group implements PowerConfigurableElectricityConsumer{
     private final SVGPath lampImage;
     private final Glow glowEffect;
     private final Circle lightEffect;
     private final DropShadow hoverEffect;
     private boolean turnedOn;
+    private double power;
 
     public Lamp(double x, double y, SVGPath lampImage) {
         this.lampImage = lampImage;
@@ -25,6 +27,7 @@ public final class Lamp extends Group {
         this.lightEffect = new Circle(0d, 0d, 80d);
         this.hoverEffect = new DropShadow(10d, Color.web("#ffcc00"));
         this.turnedOn = false;
+        this.power = 60.0;
         init(x, y);
     }
 
@@ -36,17 +39,22 @@ public final class Lamp extends Group {
 
         lightEffect.setFill(
                 new RadialGradient(
-                0, 0, 0, 0, 80d,
-                false, CycleMethod.NO_CYCLE,
-                new Stop(0, Color.web("#ffffcc", 0.3)),
-                new Stop(1, Color.web("#ffffcc", 0.0))
+                        0, 0, 0, 0, 80d,
+                        false, CycleMethod.NO_CYCLE,
+                        new Stop(0, Color.web("#ffffcc", 0.3)),
+                        new Stop(1, Color.web("#ffffcc", 0.0))
                 )
         );
         lightEffect.setVisible(false);
 
         getChildren().addAll(lampImage, lightEffect);
 
-        setOnMouseClicked(e -> toggle());
+        setOnMouseClicked(e -> {
+            switch (e.getButton()) {
+                case MouseButton.PRIMARY -> toggle();
+                case MouseButton.SECONDARY -> showPowerConfiguration();
+            }
+        });
 
         setOnMouseEntered(e -> {
             if (!turnedOn) {
@@ -87,7 +95,7 @@ public final class Lamp extends Group {
                             Duration.millis(110),
                             new KeyValue(
                                     glowEffect.levelProperty(),
-                                    0.2,
+                                    0.002 * power,
                                     Interpolator.EASE_OUT
                             )
                     ),
@@ -95,13 +103,12 @@ public final class Lamp extends Group {
                             Duration.millis(290),
                             new KeyValue(
                                     glowEffect.levelProperty(),
-                                    0.8,
+                                    0.008 * power,
                                     Interpolator.EASE_IN
                             )
                     )
             );
-        }
-        else {
+        } else {
             glowTimeline.getKeyFrames().addAll(
                     new KeyFrame(
                             Duration.ZERO,
@@ -155,5 +162,27 @@ public final class Lamp extends Group {
         }
 
         parallelTransition.play();
+    }
+
+    public void showPowerConfiguration(){
+        new PowerConfigurationDialog(this).showAndConfigure();
+    }
+
+    @Override
+    public double getPower() {
+        return power;
+    }
+
+    @Override
+    public void setPower(double power) {
+        this.power = power;
+        if (turnedOn) {
+            updateGlowEffect();
+        }
+    }
+
+    private void updateGlowEffect() {
+        double glowLevel = 0.008 * power;
+        glowEffect.setLevel(glowLevel);
     }
 }
