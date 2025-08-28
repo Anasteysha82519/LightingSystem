@@ -185,4 +185,9 @@ public final class Lamp extends Group implements PowerConfigurableElectricityCon
         double glowLevel = 0.008 * power;
         glowEffect.setLevel(glowLevel);
     }
+
+    @Override
+    public boolean isTurnedOn(){
+        return turnedOn;
+    }
 }
