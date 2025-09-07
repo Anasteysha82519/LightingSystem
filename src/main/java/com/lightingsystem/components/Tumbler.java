@@ -1,5 +1,6 @@
 package com.lightingsystem.components;
 
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseButton;
@@ -7,15 +8,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import com.lightingsystem.util.GraphicsUtils;
 
-public class Switch extends Group {
-    private final SVGPath switchImage;
+public class Tumbler extends Group {
+    private final SVGPath tumblerImage;
     private final DropShadow hoverEffect;
     private boolean turnedOn;
     private final Lamp[] lamps;
     private final String svgOn;
     private final String svgOff;
 
-    public Switch(double x, double y, Lamp[] lamps) {
+    public Tumbler(double x, double y, Lamp[] lamps) {
         this.svgOn = "M32.3678,34.1333H1.7655C0.7651,34.1333,0,33.3682,0,32.3678V1.7655C0,0.7651,0.7651,0,1.7655,0h30.6023" +
                 "C33.3682,0,34.1333,0.7651,34.1333,1.7655v30.6023C34.1333,33.3682,33.3682,34.1333,32.3678,34.1333" +
                 "M11.7701,17.0667h10.5931V6.4736H11.7701V17.0667z" +
@@ -46,50 +47,62 @@ public class Switch extends Group {
                 "M32.3678,31.1908c0-0.6473-0.5297-1.177-1.177-1.177s-1.177,0.5297-1.177,1.177" +
                 "s0.5297,1.177,1.177,1.177S32.3678,31.8381,32.3678,31.1908";
 
-        this.switchImage = createSwitchImage();
+        this.tumblerImage = createTumblerImage();
         this.hoverEffect = new DropShadow(10d, Color.web("#ffcc00"));
-        this.turnedOn = false;
+        this.turnedOn = true;
         this.lamps = lamps;
+        tumblerImage.setContent(svgOn);
         init(x, y);
     }
 
-    private SVGPath createSwitchImage() {
+    private SVGPath createTumblerImage() {
         return GraphicsUtils.newSvgPath(svgOff, Color.web("#00ffbb"), Color.web("#009999"), 2.0);
     }
 
     private void init(double x, double y) {
+        setCursor(Cursor.HAND);
+
         setTranslateX(x);
         setTranslateY(y);
 
-        getChildren().add(switchImage);
+        getChildren().add(tumblerImage);
 
         setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
-                toggleAllLamps();
+                togglePower();
             }
         });
 
         setOnMouseEntered(e -> {
-            switchImage.setFill(Color.web("#00ffbb"));
             setEffect(hoverEffect);
         });
 
         setOnMouseExited(e -> {
-            switchImage.setFill(Color.web("#00ffbb"));
             setEffect(null);
         });
     }
 
-    private void toggleAllLamps() {
+    private void togglePower() {
         turnedOn = !turnedOn;
 
-        switchImage.setContent(turnedOn ? svgOn : svgOff);
-        switchImage.setFill(Color.web("#00ffbb"));
+        tumblerImage.setContent(turnedOn ? svgOn : svgOff);
+        tumblerImage.setFill(Color.web("#00ffbb"));
 
         for (Lamp lamp : lamps) {
-            if (lamp.isTurnedOn() != turnedOn) {
-                lamp.toggle();
+            if (turnedOn) {
+                lamp.restoreState();
+            } else {
+                lamp.saveState();
+                lamp.turnOff();
             }
         }
+    }
+
+    public boolean isTurnedOn() {
+        return turnedOn;
+    }
+
+    public boolean canToggleLamp() {
+        return turnedOn;
     }
 }

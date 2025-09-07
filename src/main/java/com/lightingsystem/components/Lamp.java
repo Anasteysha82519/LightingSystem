@@ -1,6 +1,7 @@
 package com.lightingsystem.components;
 
 import javafx.animation.*;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.effect.Glow;
 import javafx.scene.effect.DropShadow;
@@ -20,6 +21,8 @@ public final class Lamp extends Group implements PowerConfigurableElectricityCon
     private final DropShadow hoverEffect;
     private boolean turnedOn;
     private double power;
+    private boolean previousState;
+    private Tumbler circuitBreaker;
 
     public Lamp(double x, double y, SVGPath lampImage) {
         this.lampImage = lampImage;
@@ -27,11 +30,18 @@ public final class Lamp extends Group implements PowerConfigurableElectricityCon
         this.lightEffect = new Circle(0d, 0d, 80d);
         this.hoverEffect = new DropShadow(10d, Color.web("#ffcc00"));
         this.turnedOn = false;
+        this.previousState = false;
         this.power = 60.0;
         init(x, y);
     }
 
+    public void setCircuitBreaker(Tumbler circuitBreaker) {
+        this.circuitBreaker = circuitBreaker;
+    }
+
     private void init(double x, double y) {
+        setCursor(Cursor.HAND);
+
         setTranslateX(x);
         setTranslateY(y);
 
@@ -72,8 +82,30 @@ public final class Lamp extends Group implements PowerConfigurableElectricityCon
     }
 
     public void toggle() {
+        if (circuitBreaker != null && !circuitBreaker.canToggleLamp()) {
+            return;
+        }
         turnedOn = !turnedOn;
+        updateVisualState();
+    }
 
+    public void saveState() {
+        previousState = turnedOn;
+    }
+
+    public void restoreState() {
+        turnedOn = previousState;
+        updateVisualState();
+    }
+
+    public void turnOff() {
+        if (turnedOn) {
+            turnedOn = false;
+            updateVisualState();
+        }
+    }
+
+    private void updateVisualState() {
         var fillTransition = new FillTransition(
                 Duration.millis(200),
                 lampImage,

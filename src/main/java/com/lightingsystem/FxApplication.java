@@ -2,7 +2,7 @@ package com.lightingsystem;
 
 import com.lightingsystem.components.Lamp;
 import com.lightingsystem.components.LampFactory;
-import com.lightingsystem.components.Switch;
+import com.lightingsystem.components.Tumbler;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -26,9 +26,12 @@ public class FxApplication extends Application {
         pane.getChildren().addAll(createRoomNames());
         Lamp[] lamps = createLamps();
         pane.getChildren().addAll(lamps);
-        Switch masterSwitch = new Switch(750, 60, lamps);
-        pane.getChildren().add(masterSwitch);
+        Tumbler circuitBreaker = new Tumbler(750, 60, lamps);
+        pane.getChildren().add(circuitBreaker);
 
+        for (Lamp lamp : lamps) {
+            lamp.setCircuitBreaker(circuitBreaker);
+        }
 
         var scene = new Scene(pane, 800, 800);
         stage.setTitle("Умная система освещения");
