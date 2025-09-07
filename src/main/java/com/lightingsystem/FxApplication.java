@@ -2,6 +2,7 @@ package com.lightingsystem;
 
 import com.lightingsystem.components.Lamp;
 import com.lightingsystem.components.LampFactory;
+import com.lightingsystem.components.Tumbler;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -17,15 +18,23 @@ import static com.lightingsystem.util.GraphicsUtils.newSvgPath;
 import static com.lightingsystem.util.GraphicsUtils.newText;
 
 public class FxApplication extends Application {
+
     @Override
     public void start(Stage stage) {
         var pane = new Pane();
         pane.getChildren().addAll(createApartmentOutline());
         pane.getChildren().addAll(createRoomNames());
-        pane.getChildren().addAll(createLamps());
+        Lamp[] lamps = createLamps();
+        pane.getChildren().addAll(lamps);
+        Tumbler circuitBreaker = new Tumbler(750, 60, lamps);
+        pane.getChildren().add(circuitBreaker);
+
+        for (Lamp lamp : lamps) {
+            lamp.setCircuitBreaker(circuitBreaker);
+        }
 
         var scene = new Scene(pane, 800, 800);
-        stage.setTitle("Hello!");
+        stage.setTitle("Умная система освещения");
         stage.setScene(scene);
         stage.show();
     }
